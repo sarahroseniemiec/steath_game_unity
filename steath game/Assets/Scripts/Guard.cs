@@ -8,6 +8,8 @@ public class Guard : MonoBehaviour {
 
 	public float speed = 5;
 	public float waitTime = 0.3f;
+	public float turnSpeed = 90;
+	//90 degrees per second
 
 	// Use this for initialization
 	void Start () {
@@ -28,15 +30,31 @@ public class Guard : MonoBehaviour {
 		transform.position = waypoints [0];
 		int targetWaypointIndex = 1;
 		Vector3 targetWaypointPosition = waypoints [targetWaypointIndex];
+		transform.LookAt (targetWaypointPosition);
 		while (true) {
 			transform.position = Vector3.MoveTowards (transform.position, targetWaypointPosition, speed * Time.deltaTime);
 			if (transform.position == targetWaypointPosition) {
 				targetWaypointIndex = (targetWaypointIndex + 1) % waypoints.Length;
 				targetWaypointPosition = waypoints [targetWaypointIndex];
 				yield return new WaitForSeconds (waitTime);
+				yield return StartCoroutine (TurnToFace (targetWaypointPosition));
+
 			}
 			yield return null;
 		}
+	}
+
+	IEnumerator TurnToFace(Vector3 lookTarget) {
+		Vector3 dirToLookTarget = (lookTarget - transform.position).normalized;
+		float rotateAngle = 90 - Mathf.Atan2 (dirToLookTarget.z, dirToLookTarget.x) * Mathf.Rad2Deg;
+		while (Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, rotateAngle)) > 0.05f) {
+			float angle = Mathf.MoveTowardsAngle (transform.eulerAngles.y, rotateAngle, turnSpeed * Time.deltaTime);
+			transform.eulerAngles = Vector3.up * angle;
+			yield return null;
+		}
+
+
+
 	}
 
 	void OnDrawGizmos() {
