@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+
+	public event System.Action OnGameWin;
+
 	public float moveSpeed = 7;
 	public float smoothMoveTime = 0.1f;
 	public float turnSpeed = 8;
@@ -18,7 +21,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody>();
-		Guard.onGuardHasSpottedPlayer += Disable;
+		Guard.OnGuardHasSpottedPlayer += Disable;
 	}
 	
 	// Update is called once per frame
@@ -46,4 +49,21 @@ public class Player : MonoBehaviour {
 		rigidbody.MoveRotation (Quaternion.Euler (Vector3.up * angle));
 		rigidbody.MovePosition (rigidbody.position + velocity * Time.deltaTime);
 	}
+
+	void OnDestroy () {
+		Guard.OnGuardHasSpottedPlayer -= Disable;
+	}
+
+	void OnTriggerEnter (Collider hitCollider) {
+		if(hitCollider.tag == "Finish") {
+			Disable ();
+			if (OnGameWin != null) {
+				OnGameWin ();
+			}
+		}
+		
+	}
+
+
+
 }

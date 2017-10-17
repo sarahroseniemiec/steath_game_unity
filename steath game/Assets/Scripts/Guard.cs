@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Guard : MonoBehaviour {
 
-	public static event System.Action onGuardHasSpottedPlayer;
+	public static event System.Action OnGuardHasSpottedPlayer;
 
 	public Transform pathHolder;
 
@@ -120,8 +120,8 @@ public class Guard : MonoBehaviour {
 		playerVisibleTimer = Mathf.Clamp (playerVisibleTimer, 0, timeToSpotPlayer);
 		spotlight.color = Color.Lerp (originalSpotlightColor, Color.red, playerVisibleTimer/timeToSpotPlayer);
 		if (playerVisibleTimer >= timeToSpotPlayer) {
-			if (onGuardHasSpottedPlayer != null) {
-				onGuardHasSpottedPlayer ();
+			if (OnGuardHasSpottedPlayer != null) {
+				OnGuardHasSpottedPlayer ();
 			}
 			
 		}
