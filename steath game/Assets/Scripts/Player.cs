@@ -13,15 +13,20 @@ public class Player : MonoBehaviour {
 	float smoothMoveVelocity;
 	Vector3 velocity;
 
-	Rigidbody rigidbody;
+	new Rigidbody rigidbody;
+	bool disabled;
 	// Use this for initialization
 	void Start () {
 		rigidbody = GetComponent<Rigidbody>();
+		Guard.onGuardHasSpottedPlayer += Disable;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Vector3 inputDirection = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical")).normalized;
+		Vector3 inputDirection = Vector3.zero;
+		if (!disabled) {
+			inputDirection = new Vector3 (Input.GetAxisRaw ("Horizontal"), 0, Input.GetAxisRaw ("Vertical")).normalized;
+		}
 		float inputMagnitude = inputDirection.magnitude;
 		float targetAngle = Mathf.Atan2 (inputDirection.x, inputDirection.z) * Mathf.Rad2Deg;
 		smoothInputMagnitude = Mathf.SmoothDamp (smoothInputMagnitude, inputMagnitude, ref smoothMoveVelocity, smoothMoveTime);
@@ -31,6 +36,10 @@ public class Player : MonoBehaviour {
 //		transform.eulerAngles = Vector3.up * angle;
 //		transform.Translate (transform.forward * moveSpeed * Time.deltaTime * smoothInputMagnitude, Space.World);
 
+	}
+
+	void Disable() {
+		disabled = true;
 	}
 
 	void FixedUpdate () {

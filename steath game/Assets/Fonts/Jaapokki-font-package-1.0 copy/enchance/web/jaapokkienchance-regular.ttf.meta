@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 49a54d27b90ef421fa5aea306d3b5be4
+timeCreated: 1507044344
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: JaapokkienchanceRegular
+  fontNames:
+  - JaapokkienchanceRegular
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
